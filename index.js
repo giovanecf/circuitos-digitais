@@ -1,7 +1,5 @@
 /*
-  SISTEMA DE NUMERAÇÃO
-
-  Início
+  SISTEMA DE NUMERAÇÃO - Início
 */
 
 const HEX_DIGITS = [
@@ -88,14 +86,11 @@ function hexToDec(value = "") {
 }
 
 /*
-  SISTEMA DE NUMERAÇÃO
+  SISTEMA DE NUMERAÇÃO - Fim
 
-  Fim
+  *
+  *
+  * 
+
+  CÓDIGOS BINÁRIOS - Início
 */
-
-console.log(binToHex("-1111"));
-
-if (false)
-  for (let i = 0; i < 20; i++) {
-    console.log(hexToDec(i.toString()));
-  }

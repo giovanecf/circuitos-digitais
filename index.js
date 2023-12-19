@@ -23,83 +23,68 @@ const HEX_DIGITS = [
   "F",
 ];
 
-function binToDec(value = "") {
+function nBaseToDec(value = "", n_base = 2) {
   if (typeof value !== "string" || value.length < 1)
     return "Unknow or not set value. Expected 'String' 1 or getter size long.";
 
   let converted_value = 0;
 
-  for (let i = 0; i < value.length; i++) {
-    const reverse_index = value.length - i;
+  const reversed_value =
+    value.indexOf("-") > -1
+      ? value.split("-")[1].split("").reverse()
+      : value.split("").reverse();
 
-    converted_value += parseInt(value[reverse_index]) * Math.pow(2, i);
-    console.log(reverse_index, converted_value);
+  for (let i = 0; i < reversed_value.length; i++) {
+    const digit_in_dec = HEX_DIGITS.indexOf(reversed_value[i]);
+
+    if (digit_in_dec >= n_base)
+      return `Bad value(${digit_in_dec}) formation for base ${n_base}`;
+
+    converted_value += parseInt(digit_in_dec) * Math.pow(n_base, i);
   }
 
-  return converted_value;
+  return value.indexOf("-") > -1 ? "-" + converted_value : converted_value;
+}
+
+function decToNBase(value = "", n_base = 2) {
+  if (typeof value !== "string" || value.length < 1)
+    return "Unknow or not set value. Expected 'String' 1 or getter size long.";
+
+  const converted_value_arr = [];
+  let numerator =
+    value.indexOf("-") > -1 ? parseInt(value.split("-")[1]) : parseInt(value);
+
+  while (numerator > 1) {
+    converted_value_arr.push(HEX_DIGITS[numerator % n_base]);
+    numerator = Math.floor(numerator / n_base);
+  }
+
+  converted_value_arr.push(numerator);
+
+  return value.indexOf("-") > -1
+    ? "-" + converted_value_arr.reverse().join("")
+    : converted_value_arr.reverse().join("");
+}
+
+function binToDec(value = "") {
+  return nBaseToDec(value, 2);
 }
 function binToHex(value = "") {
-  // Create hexToBin, first
+  return decToHex(binToDec(value).toString());
 }
 
 function decToBin(value = "") {
-  if (typeof value !== "string" || value.length < 1)
-    return "Unknow or not set value. Expected 'String' 1 or getter size long.";
-
-  const converted_value_arr = [];
-  let numerator = parseInt(value);
-
-  while (numerator > 1) {
-    converted_value_arr.push(numerator % 2);
-    numerator = Math.floor(numerator / 2);
-  }
-
-  converted_value_arr.push(numerator);
-
-  return converted_value_arr.reverse().join("");
+  return decToNBase(value, 2);
 }
 function decToHex(value = "") {
-  if (typeof value !== "string" || value.length < 1)
-    return "Unknow or not set value. Expected 'String' 1 or getter size long.";
-
-  const converted_value_arr = [];
-  let numerator = parseInt(value);
-
-  while (numerator > 1) {
-    converted_value_arr.push(HEX_DIGITS[numerator % 16]);
-    numerator = Math.floor(numerator / 16);
-  }
-
-  converted_value_arr.push(numerator);
-
-  return converted_value_arr.reverse().join("");
+  return decToNBase(value, 16);
 }
 
 function hexToBin(value = "") {
-  if (typeof value !== "string" || value.length < 1)
-    return "Unknow or not set value. Expected 'String' 1 or getter size long.";
+  return decToBin(hexToDec(value));
 }
 function hexToDec(value = "") {
-  if (typeof value !== "string" || value.length < 1)
-    return "Unknow or not set value. Expected 'String' 1 or getter size long.";
-
-  let converted_value = 0;
-
-  for (let i = 0; i < value.length; i++) {
-    const reverse_index = value.length - i;
-
-    const hex_digit_in_dec = HEX_DIGITS.indexOf(value[reverse_index]);
-    converted_value += parseInt(hex_digit_in_dec) * Math.pow(16, i);
-    console.log(
-      value.length,
-      i,
-      reverse_index,
-      hex_digit_in_dec,
-      converted_value
-    );
-  }
-
-  return converted_value;
+  return nBaseToDec(value, 16);
 }
 
 /*
@@ -108,7 +93,7 @@ function hexToDec(value = "") {
   Fim
 */
 
-console.log(hexToDec("1F"));
+console.log(binToHex("-1111"));
 
 if (false)
   for (let i = 0; i < 20; i++) {

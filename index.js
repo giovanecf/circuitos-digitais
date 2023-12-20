@@ -21,6 +21,14 @@ const HEX_DIGITS = [
   "F",
 ];
 
+function maskValue(value, n_digits) {
+  for (let i = value.length; i < n_digits; i++) {
+    value = "0" + value;
+  }
+
+  return value;
+}
+
 function nBaseToDec(value = "", n_base = 2) {
   if (typeof value !== "string" || value.length < 1)
     return "Unknow or not set value. Expected 'String' 1 or getter size long.";
@@ -93,4 +101,53 @@ function hexToDec(value = "") {
   * 
 
   CÓDIGOS BINÁRIOS - Início
+*/
+
+function convertToBCD(value_in_dec = "") {
+  const value_arr = value_in_dec.split("");
+
+  const value_converted = [];
+
+  for (const v of value_arr) {
+    value_converted.push(maskValue(decToBin(v), 4));
+  }
+
+  return value_converted.join("");
+}
+
+function convertFromBCD(value_in_bin_four_digits_groups = "") {
+  if (value_in_bin_four_digits_groups.length % 4 !== 0)
+    return "Not clearly formated!";
+
+  const value_arr = value_in_bin_four_digits_groups.split("");
+  const value_converted_arr = [];
+
+  for (let i = 0; i < value_arr.length; i += 4) {
+    const digits_to_push = binToDec(value_arr.slice(i, i + 4).join(""));
+    value_converted_arr.push(digits_to_push);
+  }
+
+  return value_converted_arr.join("");
+}
+
+function convertToGrayCode(value_in_bin = "") {
+  const value_converted_arr = [];
+  const num_digits = value_in_bin.length;
+
+  let isZeroTime = true;
+
+  for (let i = 0; i < Math.pow(2, num_digits); i++) {
+    for (let j = 0; j < Math.pow(2, num_digits - 1) / (i + 1); j++) {
+      //Thinking
+    }
+    isZeroTime = !isZeroTime;
+  }
+
+  return value_converted_arr;
+}
+
+console.log(convertToGrayCode("001101010001"));
+
+/*
+  CÓDIGOS BINÁRIOS - Fim
 */

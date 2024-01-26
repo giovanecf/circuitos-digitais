@@ -206,16 +206,17 @@ function convertFromJohnsonCode(value_in_johnson_code = "") {
   )
     return "Unknow or not set value. Expected 'String' and size multiple of 5.";
 
-  const digits = value_in_johnson_code.length / 5;
-  let counter = 0;
   const converted_value_arr = [];
+
+  let counter = 0;
+
   do {
     const index = JOHNSON_DIGITS_CODE.findIndex(
       (d) => d === value_in_johnson_code.slice(counter, counter + 5)
     );
     converted_value_arr.push(index);
     counter += 5;
-  } while (counter < digits);
+  } while (counter < value_in_johnson_code.length);
 
   return converted_value_arr.join("");
 }

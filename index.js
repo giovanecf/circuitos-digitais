@@ -49,12 +49,12 @@ function nBaseToDec(value = "", n_base = 2) {
     converted_value += parseInt(digit_in_dec) * Math.pow(n_base, i);
   }
 
-  return value.indexOf("-") > -1 ? "-" + converted_value : converted_value;
+  return value.indexOf("-") > -1 ? "-" + converted_value : "" + converted_value;
 }
 
 function decToNBase(value = "", n_base = 2) {
   if (typeof value !== "string" || value.length < 1)
-    return "Unknow or not set value. Expected 'String' 1 or getter size long.";
+    return "Unknow or not set value. Expected 'String' 1 or greatter size long.";
 
   const converted_value_arr = [];
   let numerator =
@@ -145,8 +145,49 @@ function convertToGrayCode(value_in_bin = "") {
 
   return value_converted_arr;
 }
+function convertFromGrayCode(value_in_bin = "") {}
 
-console.log(convertToGrayCode("001101010001"));
+function convertToOneHot(value_in_bin = "") {
+  if (typeof value !== "string" || value.length < 1)
+    return "Unknow or not set value. Expected 'String' 1 or greatter size long.";
+
+  const value_in_dec = parseInt(binToDec(value_in_bin));
+  const value_converted_arr = [];
+
+  for (let i = 0; i < value_in_dec; i++) {
+    value_converted_arr.push("0");
+  }
+  value_converted_arr.push("1");
+
+  return value_converted_arr.reverse().join("");
+}
+function convertFromOneHot(value_in_bin = "") {
+  if (typeof value !== "string" || value.length < 1)
+    return "Unknow or not set value. Expected 'String' 1 or greatter size long.";
+
+  if (value_in_bin.indexOf("1") > -1) {
+    const reversed_index = value_in_bin.length - value_in_bin.indexOf("1") - 1;
+    return decToBin(reversed_index.toString());
+  } else return "Bad number formation.";
+}
+
+function convertToJohnsonCode(value_in_bin = "") {}
+function convertFromJohnsonCode(value_in_bin = "") {}
+
+function convertToExcess3Code(value_in_bin = "") {
+  const value_plus_three = parseInt(binToDec(value_in_bin)) + 3;
+  const new_value_in_bin = decToBin(value_plus_three.toString());
+
+  return new_value_in_bin;
+}
+function convertFromExcess3Code(value_in_bin = "") {
+  const value_minus_three = parseInt(binToDec(value_in_bin)) - 3;
+  const new_value_in_bin = decToBin(value_minus_three.toString());
+
+  return new_value_in_bin;
+}
+
+console.log(convertFromOneHot("100"));
 
 /*
   CÓDIGOS BINÁRIOS - Fim

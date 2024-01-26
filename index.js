@@ -233,7 +233,7 @@ function convertFromExcess3Code(value_in_bin = "") {
   return new_value_in_bin;
 }
 
-console.log(convertFromJohnsonCode("00011"));
+console.log(convertFromJohnsonCode("0001100011"));
 
 /*
   CÓDIGOS BINÁRIOS - Fim

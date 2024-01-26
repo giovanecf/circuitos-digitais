@@ -21,6 +21,19 @@ const HEX_DIGITS = [
   "F",
 ];
 
+const JOHNSON_DIGITS_CODE = [
+  "00000",
+  "00001",
+  "00011",
+  "00111",
+  "01111",
+  "11111",
+  "11110",
+  "11100",
+  "11000",
+  "10000",
+];
+
 function maskValue(value, n_digits) {
   for (let i = value.length; i < n_digits; i++) {
     value = "0" + value;
@@ -148,7 +161,7 @@ function convertToGrayCode(value_in_bin = "") {
 function convertFromGrayCode(value_in_bin = "") {}
 
 function convertToOneHot(value_in_bin = "") {
-  if (typeof value !== "string" || value.length < 1)
+  if (typeof value_in_bin !== "string" || value_in_bin.length < 1)
     return "Unknow or not set value. Expected 'String' 1 or greatter size long.";
 
   const value_in_dec = parseInt(binToDec(value_in_bin));
@@ -162,7 +175,7 @@ function convertToOneHot(value_in_bin = "") {
   return value_converted_arr.reverse().join("");
 }
 function convertFromOneHot(value_in_bin = "") {
-  if (typeof value !== "string" || value.length < 1)
+  if (typeof value_in_bin !== "string" || value_in_bin.length < 1)
     return "Unknow or not set value. Expected 'String' 1 or greatter size long.";
 
   if (value_in_bin.indexOf("1") > -1) {
@@ -171,8 +184,41 @@ function convertFromOneHot(value_in_bin = "") {
   } else return "Bad number formation.";
 }
 
-function convertToJohnsonCode(value_in_bin = "") {}
-function convertFromJohnsonCode(value_in_bin = "") {}
+function convertToJohnsonCode(value_in_bin = "") {
+  if (typeof value_in_bin !== "string" || value_in_bin.length < 1)
+    return "Unknow or not set value. Expected 'String' 1 or greatter size long.";
+
+  const value_in_dec = binToDec(value_in_bin);
+  const value_converted_arr = [];
+
+  for (let i = 0; i < value_in_dec.length; i++) {
+    const index = parseInt(value_in_dec[i]);
+    value_converted_arr.push(JOHNSON_DIGITS_CODE[index]);
+  }
+
+  return value_converted_arr.join("");
+}
+function convertFromJohnsonCode(value_in_johnson_code = "") {
+  if (
+    typeof value_in_johnson_code !== "string" ||
+    value_in_johnson_code.length < 5 ||
+    value_in_johnson_code.length % 5 !== 0
+  )
+    return "Unknow or not set value. Expected 'String' and size multiple of 5.";
+
+  const digits = value_in_johnson_code.length / 5;
+  let counter = 0;
+  const converted_value_arr = [];
+  do {
+    const index = JOHNSON_DIGITS_CODE.findIndex(
+      (d) => d === value_in_johnson_code.slice(counter, counter + 5)
+    );
+    converted_value_arr.push(index);
+    counter += 5;
+  } while (counter < digits);
+
+  return converted_value_arr.join("");
+}
 
 function convertToExcess3Code(value_in_bin = "") {
   const value_plus_three = parseInt(binToDec(value_in_bin)) + 3;
@@ -187,7 +233,7 @@ function convertFromExcess3Code(value_in_bin = "") {
   return new_value_in_bin;
 }
 
-console.log(convertFromOneHot("100"));
+console.log(convertFromJohnsonCode("00011"));
 
 /*
   CÓDIGOS BINÁRIOS - Fim
